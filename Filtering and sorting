@@ -1,0 +1,13 @@
+# initial filtering, sorting, indexing code is the same 
+
+# additional remove mito step to ensure no mitochondrial reads are present 
+
+#PBS -lwalltime=72:00:00
+#PBS -lselect=1:ncpus=8:mem=100gb
+module load samtools
+for file in $PBS_O_WORKDIR/*.bl.dedup.sort.bam
+do
+name=`basename $file .bam`
+samtools view -h $file | grep -v chrM | samtools view -h -b - > $name.nomito.bam
+done
+cp * $PBS_O_WORKDIR

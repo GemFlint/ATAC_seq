@@ -1,0 +1,11 @@
+# Peak calling done differently to ChIP as no input file, but similar to CUT&Tag
+
+#PBS -lwalltime=10:00:00
+#PBS -lselect=1:ncpus=8:mem=100gb
+module load anaconda3/personal
+for file in $PBS_O_WORKDIR/*.nomito.bam
+do
+name=`basename $file .bl.dedup.sort.nomito.bam`
+macs2 callpeak -f BAMPE --nolambda -t $file -n $name
+done
+cp * $PBS_O_WORKDIR
